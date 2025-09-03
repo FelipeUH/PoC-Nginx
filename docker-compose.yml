@@ -1,0 +1,61 @@
+services:
+  user_api1:
+    build:
+      context: ./user_api
+    environment:
+      - INSTANCE=1
+      - PORT=3001
+    ports:
+      - "3001:3001"
+    networks:
+      - api_network
+  
+  user_api2:
+    build:
+      context: ./user_api
+    environment:
+      - INSTANCE=2
+      - PORT=3002
+    ports:
+      - "3002:3002"
+    networks:
+      - api_network
+
+  product_api1:
+    build:
+      context: ./product_api
+    environment:
+      - INSTANCE=1
+      - PORT=4001
+    ports:
+      - "4001:4001"
+    networks:
+      - api_network
+
+  product_api2:
+    build:
+      context: ./product_api
+    environment:
+      - INSTANCE=2
+      - PORT=4002
+    ports:
+      - "4002:4002"
+    networks:
+      - api_network
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - user_api1
+      - user_api2
+      - product_api1
+      - product_api2
+    networks:
+      - api_network
+
+networks:
+  api_network:
+    driver: bridge
