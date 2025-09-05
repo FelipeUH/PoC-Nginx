@@ -47,7 +47,7 @@ services:
     build:
       context: ./nginx
     ports:
-      - "80:80"
+      - "3000:80"
     depends_on:
       - user_api1
       - user_api2
