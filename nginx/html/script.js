@@ -32,7 +32,7 @@ document.getElementById('sendToken').addEventListener('click', function() {
     })
     .then(response => response.json())
     .then(data => {
-        result.innerHTML = JSON.stringify(data, null, 2);
+        result.innerHTML = `<h3>Autenticación:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
     })
     .catch(error => {
         result.innerHTML = `<p style="color: red;">Error comparando el token: ${error}</p>`;

@@ -2,22 +2,26 @@ const express = require('express');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const INSTANCE = process.env.INSTANCE || "default";
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
 
 app.post('/api/auth', (req, res) => {
   let reqAuthorization = req.headers.authorization;
   if (!reqAuthorization) {
     res.json({
+      from: `Auth API - Instance ${INSTANCE}`,
       message: "No tienes un token de autorización",
     });
     return;
   }
   if (reqAuthorization === TOKEN) {
     res.json({
+      from: `Auth API - Instance ${INSTANCE}`,
       message: "Login exitoso! :D",
     });
   } else {
     res.json({
+      from: `Auth API - Instance ${INSTANCE}`,
       message: "El token de autorización no es correcto! D:",
     });
   }

@@ -47,6 +47,7 @@ services:
     build:
       context: ./auth_api
     environment:
+      - INSTANCE=1
       - PORT=5001
     ports:
       - "5001:5001"
@@ -57,6 +58,7 @@ services:
     build:
       context: ./auth_api
     environment:
+      - INSTANCE=2
       - PORT=5002
     ports:
       - "5002:5002"
