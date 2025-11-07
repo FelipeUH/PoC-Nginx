@@ -1,1 +1,3 @@
 */node_modules/
+nginx/localhost-key.pem
+nginx/localhost.pem
