@@ -43,6 +43,26 @@ services:
     networks:
       - api_network
 
+  auth_api1:
+    build:
+      context: ./auth_api
+    environment:
+      - PORT=5001
+    ports:
+      - "5001:5001"
+    networks:
+      - api_network
+
+  auth_api2:
+    build:
+      context: ./auth_api
+    environment:
+      - PORT=5002
+    ports:
+      - "5002:5002"
+    networks:
+      - api_network
+
   nginx:
     build:
       context: ./nginx
@@ -54,6 +74,8 @@ services:
       - user_api2
       - product_api1
       - product_api2
+      - auth_api1
+      - auth_api2
     networks:
       - api_network
 
