@@ -11,19 +11,20 @@ Este proyecto simple configura un entorno de desarrollo con **Nginx** como servi
 
 1. Clona este repositorio:
 ```bash
-git clone https://github.com/tu-usuario/mi-proyecto.git
-cd mi-proyecto
+git clone https://github.com/FelipeUH/PoC-Nginx.git
+cd PoC-Nginx
 ```
 
-2. Construye y ejecuta los contenedores utilizando Docker Compose
+2. Construye las imagenes y ejecuta los contenedores utilizando Docker Compose
 ```bash
 docker-compose up --build
 ```
 
 3. Accede a la aplicación en tu navegador:
-*  https://localhost: Nginx servirá una página con botones que redirigen a los dos endpoints. Aquí Nginx actúa de servidor web.
-* http://localhost/api/users: Nginx redirige la petición al microservicio de usuarios y devuelve la respuesta.
-* http://localhost/api/products: Nginx redirige la petición al microservicio de productos y devuelve la respuesta.
+* https://localhost: Nginx servirá una página con botones que redirigen a los dos endpoints. Aquí Nginx actúa de servidor web.
+* http://localhost/api/users: Nginx redirige la petición GET al microservicio de usuarios y devuelve la respuesta.
+* http://localhost/api/products: Nginx redirige la petición GET al microservicio de productos y devuelve la respuesta.
+* http://localhost/api/auth: Nginx redirige la petición GET al microservicio de autenticacion y devuelve la respuesta.
 
 Al realizar diferentes peticiones a un mismo endpoint podemos ver que cada vez nos da respuesta una instacia diferente, debido a que Nginx está balanceando las cargas.
 
