@@ -33,6 +33,7 @@ Además, Nginx:
 
 - Docker
 - Docker Compose
+- [mkcert](https://github.com/FiloSottile/mkcert), para generar el certificado HTTPS local
 
 ## Instrucciones de Uso
 
@@ -42,20 +43,28 @@ git clone https://github.com/FelipeUH/PoC-Nginx.git
 cd PoC-Nginx
 ```
 
-2. Construye las imagenes y ejecuta los contenedores utilizando Docker Compose
+2. Genera el certificado HTTPS para `localhost`. Los archivos `.pem` no están en el repositorio (`.gitignore`), y la imagen de Nginx los necesita para construirse:
+```bash
+mkcert -install
+mkcert -key-file nginx/localhost-key.pem -cert-file nginx/localhost.pem localhost
+```
+
+3. Construye las imágenes y ejecuta los contenedores utilizando Docker Compose:
 ```bash
 docker-compose up --build
 ```
 
-3. Accede a la aplicación en tu navegador:
-* https://localhost: Nginx servirá una página con botones que redirigen a los dos endpoints. Aquí Nginx actúa de servidor web.
-* http://localhost/api/users: Nginx redirige la petición GET al microservicio de usuarios y devuelve la respuesta.
-* http://localhost/api/products: Nginx redirige la petición GET al microservicio de productos y devuelve la respuesta.
-* http://localhost/api/auth: Nginx redirige la petición GET al microservicio de autenticacion y devuelve la respuesta.
+4. Accede a la aplicación en tu navegador:
+* https://localhost: Nginx sirve una página con botones que llaman a los tres endpoints. Aquí Nginx actúa como servidor web. Si entras por http://localhost:3000, Nginx te redirige a HTTPS.
+* https://localhost/api/users: Nginx redirige la petición GET al microservicio de usuarios y devuelve la respuesta.
+* https://localhost/api/products: Nginx redirige la petición GET al microservicio de productos y devuelve la respuesta.
+* `/api/auth` solo acepta **POST**, así que se prueba con el botón de la página y no abriéndolo en la barra de direcciones.
 
-Al realizar diferentes peticiones a un mismo endpoint podemos ver que cada vez nos da respuesta una instacia diferente, debido a que Nginx está balanceando las cargas.
+Cada respuesta indica qué instancia la atendió. En `/api/products` y `/api/auth` las peticiones se reparten entre las dos instancias. En `/api/users`, en cambio, siempre responde la misma, porque `ip_hash` asigna cada IP a una instancia fija (ver [Arquitectura](#arquitectura)).
 
-4. Para detener los contenedores:
+> Nginx rechaza con 403 las peticiones de `curl` y `wget`. Para probar desde la terminal, envía otro user-agent: `curl -k -A "Mozilla/5.0" https://localhost/api/users`.
+
+5. Para detener los contenedores:
 ```bash
 docker-compose down
 ```
